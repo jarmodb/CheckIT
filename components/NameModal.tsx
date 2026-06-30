@@ -21,7 +21,7 @@ export default function NameModal({ onSave }: { onSave: (name: string) => void }
             placeholder="Your name"
             value={name}
             onChange={e => setName(e.target.value)}
-            className="border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder:text-gray-400 text-gray-900"
           />
           <button
             type="submit"

@@ -77,18 +77,18 @@ export default function ListPage({ params }: { params: Promise<{ id: string }> }
   return (
     <>
       {!username && <NameModal onSave={saveUsername} />}
-      <main className="min-h-screen bg-gray-50">
+      <main className="min-h-screen bg-gray-50 dark:bg-gray-950">
         <div className="max-w-xl mx-auto px-4 py-12">
-          <Link href="/" className="text-sm text-gray-400 hover:text-gray-600 mb-6 inline-block">← All lists</Link>
+          <Link href="/" className="text-sm text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 mb-6 inline-block">← All lists</Link>
 
           <div className="flex items-start justify-between mb-8">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">{list?.name ?? '...'}</h1>
-              {username && <p className="text-gray-400 text-xs mt-1">Logged in as <span className="font-medium text-gray-600">{username}</span></p>}
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{list?.name ?? '...'}</h1>
+              {username && <p className="text-gray-400 text-xs mt-1">Logged in as <span className="font-medium text-gray-600 dark:text-gray-300">{username}</span></p>}
             </div>
             <button
               onClick={copyLink}
-              className="text-sm bg-white border border-gray-200 rounded-lg px-3 py-2 hover:border-indigo-300 transition-colors text-gray-600"
+              className="text-sm bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2 hover:border-indigo-300 dark:hover:border-indigo-500 transition-colors text-gray-600 dark:text-gray-300"
             >
               {copied ? 'Copied!' : 'Copy link'}
             </button>
@@ -100,7 +100,7 @@ export default function ListPage({ params }: { params: Promise<{ id: string }> }
               placeholder="Add an item..."
               value={newItemText}
               onChange={e => setNewItemText(e.target.value)}
-              className="flex-1 border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="flex-1 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder:text-gray-400 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
             <button
               type="submit"
@@ -145,10 +145,10 @@ export default function ListPage({ params }: { params: Promise<{ id: string }> }
 
 function ItemRow({ item, onToggle, onDelete }: { item: Item; onToggle: (i: Item) => void; onDelete: (id: string) => void }) {
   return (
-    <li className="flex items-start gap-3 bg-white border border-gray-200 rounded-xl px-4 py-3 group">
+    <li className="flex items-start gap-3 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 group">
       <button
         onClick={() => onToggle(item)}
-        className={`mt-0.5 w-5 h-5 rounded-full border-2 flex-shrink-0 transition-colors ${item.completed ? 'bg-indigo-600 border-indigo-600' : 'border-gray-300 hover:border-indigo-400'}`}
+        className={`mt-0.5 w-5 h-5 rounded-full border-2 flex-shrink-0 transition-colors ${item.completed ? 'bg-indigo-600 border-indigo-600' : 'border-gray-300 dark:border-gray-600 hover:border-indigo-400'}`}
       >
         {item.completed && (
           <svg viewBox="0 0 20 20" fill="white" className="w-full h-full p-0.5">
@@ -157,7 +157,7 @@ function ItemRow({ item, onToggle, onDelete }: { item: Item; onToggle: (i: Item)
         )}
       </button>
       <div className="flex-1 min-w-0">
-        <p className={`text-sm ${item.completed ? 'line-through text-gray-400' : 'text-gray-800'}`}>{item.text}</p>
+        <p className={`text-sm ${item.completed ? 'line-through text-gray-400' : 'text-gray-800 dark:text-gray-100'}`}>{item.text}</p>
         <p className="text-xs text-gray-400 mt-0.5">
           Added by <span className="font-medium">{item.created_by}</span>
           {item.completed && item.completed_by && (

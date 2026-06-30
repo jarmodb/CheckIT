@@ -34,10 +34,10 @@ export default function Home() {
   return (
     <>
       {!username && <NameModal onSave={saveUsername} />}
-      <main className="min-h-screen bg-gray-50">
+      <main className="min-h-screen bg-gray-50 dark:bg-gray-950">
         <div className="max-w-xl mx-auto px-4 py-12">
-          <h1 className="text-3xl font-bold text-gray-900 mb-1">Checkit</h1>
-          <p className="text-gray-500 text-sm mb-8">Share a list link with your team — no account needed.</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-1">Checkit</h1>
+          <p className="text-gray-500 dark:text-gray-400 text-sm mb-8">Share a list link with your team — no account needed.</p>
 
           <form onSubmit={createList} className="flex gap-2 mb-8">
             <input
@@ -45,7 +45,7 @@ export default function Home() {
               placeholder="New list name (e.g. Show 14/07)"
               value={newListName}
               onChange={e => setNewListName(e.target.value)}
-              className="flex-1 border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="flex-1 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder:text-gray-400 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
             <button
               type="submit"
@@ -66,9 +66,9 @@ export default function Home() {
                 <li key={list.id}>
                   <Link
                     href={`/list/${list.id}`}
-                    className="flex items-center justify-between bg-white border border-gray-200 rounded-xl px-5 py-4 hover:border-indigo-300 hover:shadow-sm transition-all group"
+                    className="flex items-center justify-between bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl px-5 py-4 hover:border-indigo-300 dark:hover:border-indigo-500 hover:shadow-sm transition-all group"
                   >
-                    <span className="font-medium text-gray-800 group-hover:text-indigo-600 transition-colors">{list.name}</span>
+                    <span className="font-medium text-gray-800 dark:text-gray-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{list.name}</span>
                     <span className="text-gray-400 text-xs">{new Date(list.created_at).toLocaleDateString()}</span>
                   </Link>
                 </li>

@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect, use } from 'react'
 import Link from 'next/link'
-import { supabase, type Item, type List } from '@/lib/supabase'
+import { supabase, LISTS_TABLE, ITEMS_TABLE, type Item, type List } from '@/lib/supabase'
 import { useUsername } from '@/hooks/useUsername'
 import NameModal from '@/components/NameModal'
 
@@ -20,7 +20,7 @@ export default function ListPage({ params }: { params: Promise<{ id: string }> }
 
     const channel = supabase
       .channel(`list-${id}`)
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'items', filter: `list_id=eq.${id}` }, payload => {
+      .on('postgres_changes', { event: '*', schema: 'public', table: ITEMS_TABLE, filter: `list_id=eq.${id}` }, payload => {
         if (payload.eventType === 'INSERT') {
           setItems(prev => [...prev, payload.new as Item])
         } else if (payload.eventType === 'UPDATE') {
@@ -35,12 +35,12 @@ export default function ListPage({ params }: { params: Promise<{ id: string }> }
   }, [id])
 
   async function fetchList() {
-    const { data } = await supabase.from('lists').select('*').eq('id', id).single()
+    const { data } = await supabase.from(LISTS_TABLE).select('*').eq('id', id).single()
     setList(data)
   }
 
   async function fetchItems() {
-    const { data } = await supabase.from('items').select('*').eq('list_id', id).order('created_at', { ascending: true })
+    const { data } = await supabase.from(ITEMS_TABLE).select('*').eq('list_id', id).order('created_at', { ascending: true })
     setItems(data ?? [])
     setLoading(false)
   }
@@ -48,21 +48,21 @@ export default function ListPage({ params }: { params: Promise<{ id: string }> }
   async function addItem(e: React.FormEvent) {
     e.preventDefault()
     if (!newItemText.trim() || !username) return
-    await supabase.from('items').insert({ list_id: id, text: newItemText.trim(), created_by: username })
+    await supabase.from(ITEMS_TABLE).insert({ list_id: id, text: newItemText.trim(), created_by: username })
     setNewItemText('')
   }
 
   async function toggleItem(item: Item) {
     if (!username) return
     if (item.completed) {
-      await supabase.from('items').update({ completed: false, completed_by: null, completed_at: null }).eq('id', item.id)
+      await supabase.from(ITEMS_TABLE).update({ completed: false, completed_by: null, completed_at: null }).eq('id', item.id)
     } else {
-      await supabase.from('items').update({ completed: true, completed_by: username, completed_at: new Date().toISOString() }).eq('id', item.id)
+      await supabase.from(ITEMS_TABLE).update({ completed: true, completed_by: username, completed_at: new Date().toISOString() }).eq('id', item.id)
     }
   }
 
   async function deleteItem(itemId: string) {
-    await supabase.from('items').delete().eq('id', itemId)
+    await supabase.from(ITEMS_TABLE).delete().eq('id', itemId)
   }
 
   function copyLink() {

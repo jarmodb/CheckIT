@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { supabase, type List } from '@/lib/supabase'
+import { supabase, LISTS_TABLE, type List } from '@/lib/supabase'
 import { useUsername } from '@/hooks/useUsername'
 import NameModal from '@/components/NameModal'
 
@@ -16,7 +16,7 @@ export default function Home() {
   }, [])
 
   async function fetchLists() {
-    const { data } = await supabase.from('lists').select('*').order('created_at', { ascending: false })
+    const { data } = await supabase.from(LISTS_TABLE).select('*').order('created_at', { ascending: false })
     setLists(data ?? [])
     setLoading(false)
   }
@@ -24,7 +24,7 @@ export default function Home() {
   async function createList(e: React.FormEvent) {
     e.preventDefault()
     if (!newListName.trim()) return
-    const { data } = await supabase.from('lists').insert({ name: newListName.trim() }).select().single()
+    const { data } = await supabase.from(LISTS_TABLE).insert({ name: newListName.trim() }).select().single()
     if (data) {
       setLists(prev => [data, ...prev])
       setNewListName('')

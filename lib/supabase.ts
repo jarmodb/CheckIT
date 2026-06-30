@@ -5,6 +5,9 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
+export const LISTS_TABLE = 'checkit_lists'
+export const ITEMS_TABLE = 'checkit_items'
+
 export type List = {
   id: string
   name: string

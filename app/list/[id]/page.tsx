@@ -86,9 +86,7 @@ export default function ListPage({ params }: { params: Promise<{ id: string }> }
       {!username && <NameModal onSave={saveUsername} />}
       <main className="min-h-screen bg-gray-50 dark:bg-gray-950">
         <div className="max-w-xl mx-auto px-4 py-12">
-          <Link href="/" className="text-sm text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 mb-6 inline-block">← All lists</Link>
-
-          <div className="flex items-start justify-between mb-8">
+<div className="flex items-start justify-between mb-8">
             <div>
               <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{list?.name ?? '...'}</h1>
               {username && <p className="text-gray-400 text-xs mt-1">Logged in as <span className="font-medium text-gray-600 dark:text-gray-300">{username}</span></p>}

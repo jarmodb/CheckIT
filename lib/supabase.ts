@@ -18,6 +18,7 @@ export type Item = {
   id: string
   list_id: string
   text: string
+  head_number: string | null
   created_by: string
   completed: boolean
   completed_by: string | null

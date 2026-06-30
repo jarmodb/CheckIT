@@ -11,6 +11,7 @@ export default function ListPage({ params }: { params: Promise<{ id: string }> }
   const [list, setList] = useState<List | null>(null)
   const [items, setItems] = useState<Item[]>([])
   const [newItemText, setNewItemText] = useState('')
+  const [newHeadNumber, setNewHeadNumber] = useState('')
   const [loading, setLoading] = useState(true)
   const [copied, setCopied] = useState(false)
 
@@ -48,8 +49,14 @@ export default function ListPage({ params }: { params: Promise<{ id: string }> }
   async function addItem(e: React.FormEvent) {
     e.preventDefault()
     if (!newItemText.trim() || !username) return
-    await supabase.from(ITEMS_TABLE).insert({ list_id: id, text: newItemText.trim(), created_by: username })
+    await supabase.from(ITEMS_TABLE).insert({
+      list_id: id,
+      text: newItemText.trim(),
+      head_number: newHeadNumber.trim() || null,
+      created_by: username,
+    })
     setNewItemText('')
+    setNewHeadNumber('')
   }
 
   async function toggleItem(item: Item) {
@@ -94,21 +101,30 @@ export default function ListPage({ params }: { params: Promise<{ id: string }> }
             </button>
           </div>
 
-          <form onSubmit={addItem} className="flex gap-2 mb-8">
-            <input
-              type="text"
-              placeholder="Add an item..."
-              value={newItemText}
-              onChange={e => setNewItemText(e.target.value)}
-              className="flex-1 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder:text-gray-400 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            />
-            <button
-              type="submit"
-              disabled={!newItemText.trim()}
-              className="bg-indigo-600 text-white rounded-lg px-4 py-2.5 text-sm font-medium hover:bg-indigo-700 disabled:opacity-40 transition-colors"
-            >
-              Add
-            </button>
+          <form onSubmit={addItem} className="flex flex-col gap-2 mb-8">
+            <div className="flex gap-2">
+              <input
+                type="text"
+                placeholder="Head number (optional)"
+                value={newHeadNumber}
+                onChange={e => setNewHeadNumber(e.target.value)}
+                className="w-36 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder:text-gray-400 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+              <input
+                type="text"
+                placeholder="Describe the issue..."
+                value={newItemText}
+                onChange={e => setNewItemText(e.target.value)}
+                className="flex-1 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder:text-gray-400 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+              <button
+                type="submit"
+                disabled={!newItemText.trim()}
+                className="bg-indigo-600 text-white rounded-lg px-4 py-2.5 text-sm font-medium hover:bg-indigo-700 disabled:opacity-40 transition-colors"
+              >
+                Add
+              </button>
+            </div>
           </form>
 
           {loading ? (
@@ -157,7 +173,14 @@ function ItemRow({ item, onToggle, onDelete }: { item: Item; onToggle: (i: Item)
         )}
       </button>
       <div className="flex-1 min-w-0">
-        <p className={`text-sm ${item.completed ? 'line-through text-gray-400' : 'text-gray-800 dark:text-gray-100'}`}>{item.text}</p>
+        <div className="flex items-baseline gap-2">
+          {item.head_number && (
+            <span className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950 px-1.5 py-0.5 rounded flex-shrink-0">
+              #{item.head_number}
+            </span>
+          )}
+          <p className={`text-sm ${item.completed ? 'line-through text-gray-400' : 'text-gray-800 dark:text-gray-100'}`}>{item.text}</p>
+        </div>
         <p className="text-xs text-gray-400 mt-0.5">
           Added by <span className="font-medium">{item.created_by}</span>
           {item.completed && item.completed_by && (

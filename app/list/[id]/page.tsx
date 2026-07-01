@@ -188,7 +188,7 @@ function ItemRow({ item, onToggle, onDelete }: { item: Item; onToggle: (i: Item)
       </div>
       <button
         onClick={() => onDelete(item.id)}
-        className="opacity-0 group-hover:opacity-100 text-gray-300 hover:text-red-400 transition-all text-lg leading-none"
+        className="text-gray-300 hover:text-red-400 dark:text-gray-600 dark:hover:text-red-400 transition-all text-lg leading-none"
         aria-label="Delete item"
       >
         ×
